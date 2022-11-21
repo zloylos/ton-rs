@@ -1,6 +1,6 @@
 use std::sync::{Arc, Mutex};
 
-use log::{debug, info};
+use log::{debug, error, info};
 
 use crate::{request, types};
 
@@ -59,7 +59,7 @@ impl Client {
                     return Some(result);
                 }
                 Err(err) => {
-                    info!("get_account_state error: {err}");
+                    error!("get_account_state error: {err}");
                     return None;
                 }
             }
@@ -126,7 +126,7 @@ impl Client {
                     }
                 }
                 Err(err) => {
-                    info!("get_transactions error: {err}");
+                    error!("get_transactions error: {err}");
                     break;
                 }
             };
@@ -143,7 +143,7 @@ impl Client {
                 return Some(result);
             }
             Err(err) => {
-                info!("master_chain_info error: {err}");
+                error!("master_chain_info error: {err}");
                 return None;
             }
         };
@@ -156,7 +156,7 @@ impl Client {
                 info!("sync success, response: {response}");
             }
             Err(err) => {
-                info!("sync client error: {err}");
+                error!("sync client error: {err}");
             }
         };
     }
@@ -180,13 +180,12 @@ impl Client {
         });
         match self.receiver.receive(&resp).await {
             Ok(response) => {
-                info!("lookup_block response: {response}");
                 let resp: types::BlockId = serde_json::from_value(response).unwrap();
                 return Ok(resp);
             }
             Err(err) => {
                 let msg = format!("lookup_block error: {err}");
-                info!("{msg}");
+                error!("{msg}");
                 return Err(msg);
             }
         };
@@ -203,7 +202,11 @@ impl Client {
             Ok(response) => {
                 info!("init success: {response}");
             }
-            _ => self.init(),
+            Err(msg) => {
+                error!("init client error: {msg}, trying to re-init after 1s");
+                std::thread::sleep(std::time::Duration::from_secs(1));
+                self.init()
+            }
         };
     }
 }
