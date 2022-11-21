@@ -1,0 +1,16 @@
+[package]
+name = "ton-rs-client-cli"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+base64 = "0.13.1"
+chrono = { version = "0.4.23", features = ["serde"] }
+clap = { version = "4.0.24", features = ["derive"] }
+env_logger = "0.9.3"
+futures = { version = "0.3.25", futures = ["threa-pool"] }
+log = "0.4.17"
+reqwest = { version = "0.11.13", features = ["blocking"] }
+serde = { version = "1.0.147", features = ["derive"] }
+serde_json = "1.0.87"
+ton-rs-client = { path = "../client", version = "0.1.0" }
