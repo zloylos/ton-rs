@@ -1,5 +1,6 @@
 mod client;
 mod config;
+mod interop;
 mod raw_client;
 mod raw_receiver;
 
