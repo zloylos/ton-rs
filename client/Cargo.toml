@@ -1,0 +1,28 @@
+[package]
+name = "ton-rs-client"
+version = "0.1.0"
+edition = "2021"
+
+build = "build.rs"
+
+[profile.release]
+lto = true
+
+[dependencies]
+base64 = "0.13.1"
+byteorder = "1.4.3"
+crc16 = "0.4.0"
+crossbeam = { version = "0.8.2", features = ["crossbeam-channel", "crossbeam-deque", "crossbeam-epoch", "crossbeam-queue"] }
+hex = "0.4.3"
+log = "0.4.17"
+num-bigint = { version = "0.4.3", features = ["serde"] }
+rand = "0.8.5"
+serde = { version = "1.0.147", features = ["derive"] }
+serde_json = "1.0.87"
+futures = "0.3.25"
+libloading = "0.7.4"
+lazy_static = "1.4.0"
+
+[build-dependencies]
+fs_extra = "1.2.0"
+pkg-config = "0.3.26"
